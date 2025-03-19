@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValues } from '../../types/formvalues';
 import { useRouter } from 'next/navigation';
 import { CardContent } from '@/components/ui/card';
+import Link from 'next/link';
 
 const SignUpForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>(); // react-hook-form
@@ -36,7 +37,7 @@ const SignUpForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full text-sm">
          <CardContent className="space-y-4">
-      <label htmlFor="name">名前</label>
+      <label htmlFor="name">ユーザーネーム(10文字以内)</label>
       <Input
         id="name"
         type="text"
@@ -61,7 +62,7 @@ const SignUpForm = () => {
       />
       {errors.email && <p className="text-red-500">{errors.email.message}</p>}
 
-      <label htmlFor="password">パスワード</label>
+      <label htmlFor="password">パスワード(6桁以上)</label>
       <Input
         id="password"
         type="password"
@@ -73,6 +74,7 @@ const SignUpForm = () => {
       {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
       <Button type="submit" className="w-full bg-green-500 text-white">アカウント作成</Button>
+      <Link href="/login" className='text-blue-500 border-blue-500 border-b'>ログインはこちら</Link>
       </CardContent>
     </form>
   );
