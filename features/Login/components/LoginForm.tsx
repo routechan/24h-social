@@ -16,7 +16,7 @@ const LoginForm = () => {
     const [loginError,setLoginError] = useState<null | boolean>(null)
 
     const onSubmit:SubmitHandler<LoginValues> = async(data)=>{
-        console.log(data)
+        
         const {  email, password } = data;
       const response =  await loginUser(email,password);
       if(response.status === 200){
@@ -59,7 +59,7 @@ const LoginForm = () => {
  {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
  {loginError && <p className="text-red-500">メールアドレスかパスワードに誤りがあります。</p>}
- <Button type="submit" className="w-full bg-green-500 text-white">ログイン</Button>
+ <Button type="submit" className="w-full bg-green-500 text-white cursor-pointer">ログイン</Button>
  </CardContent>
  
 </form>

@@ -35,7 +35,7 @@ const formattedTime = `${String(remainingHours).padStart(2, '0')}:${String(remai
     </Avatar>
     <div>
     <div className='text-sm flex gap-8'>
-        <div className='flex gap-1 '>{post.user.name}<span className='text-gray-500'>@{post.user.id}</span></div>
+        <div className='flex gap-1 '>{post.user.name}</div>
         <div className='text-gray-500'>残り{formattedTime}</div>
     </div>
     <div className=' mt-2 '>{post.content}</div>
