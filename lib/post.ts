@@ -5,3 +5,4 @@ export async function post(message:string,userId:number) {
       body: JSON.stringify({ message,userId }),
     });
   }
+  
