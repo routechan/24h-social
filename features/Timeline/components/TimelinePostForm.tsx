@@ -20,22 +20,27 @@ const TimelinePostForm = () => {
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
-      console.log(data)
-      setUser(data.session?.user || null);
+      setUser(data?.session?.user);
+    
     };
 
     getSession();
   }, []);
+  console.log(user)
  
 
   // 投稿ボタン押下
   const onSubmit = async () => {
+    if(!user){
+      alert("ログインしてください")
+      return
+    }
     if (!message.trim() || message.length > MAX_MESSAGE_LENGTH) return; // 空文字・140文字以上の投稿を防ぐ
-    if (!user) return; // 未ログインなら投稿できない
+    
 
     setIsLoading(true); // 送信開始
     try {
-      const response = await post(message,16); // ログインユーザーのIDを使う
+      const response = await post(message,user.uid); // ログインユーザーのIDを使う
 
       if (response.status === 201) {
         console.log("投稿成功");

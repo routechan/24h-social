@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LoginValues } from "../types/loginValues";
 import { useRouter } from "next/navigation";
-import { loginUser } from "@/lib/auth";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 
 const LoginForm = () => {
@@ -18,13 +18,13 @@ const LoginForm = () => {
     const onSubmit:SubmitHandler<LoginValues> = async(data)=>{
         
         const {  email, password } = data;
-      const response =  await loginUser(email,password);
-      if(response.status === 200){
+        const { user, error } = await supabase.auth.signInWithPassword({ email, password })
+      if(error){
+        console.error("ログインに失敗しました");
+        setLoginError(true)
+      }else {
         console.log("ログイン成功")
         router.push("/")
-      }else {
-        console.error("ログインに失敗しました", response);
-        setLoginError(true)
       }
       
     }
