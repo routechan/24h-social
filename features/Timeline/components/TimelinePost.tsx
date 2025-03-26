@@ -13,16 +13,12 @@ const elapsedMinutes = Math.floor(elapsedSeconds / 60);
 const elapsedHours = Math.floor(elapsedMinutes / 60);
 
 // 24時間から引いて「残り時間」を計算
-let remainingHours = 24 - elapsedHours;
-let remainingMinutes = 60 - (elapsedMinutes % 60);
-let remainingSeconds = 60 - (elapsedSeconds % 60);
+const remainingMinutes = 59 - (elapsedMinutes % 60);
+const remainingSeconds = 59 - (elapsedSeconds % 60);
+const remainingHours = 23 - elapsedHours;
 
 
 
-// もし `remainingHours` が 24 になったら 0 にする（バグ修正）
-if (remainingHours === 24) {
-  remainingHours = 23;
-}
 // 時間を "HH:mm:ss" 形式にフォーマット
 const formattedTime = `${String(remainingHours).padStart(2, '0')}:${String(remainingMinutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 

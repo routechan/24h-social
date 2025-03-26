@@ -1,6 +1,5 @@
 import { supabase } from "@/lib/supabase";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
 // Prisma クライアントのインスタンスを作成
@@ -24,16 +23,15 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Supabase user ID is missing" }, { status: 500 });
     }
 
-    // パスワードをハッシュ化
-    const hashedPassword = await bcrypt.hash(password, 10);
+  
 
     // Prisma でユーザー作成
     const user = await prisma.user.create({
       data: {
+        id:supabaseId,
         name,
         email,
-        password: hashedPassword,
-       // supabaseId,  Supabase の ID を保存
+
       },
     });
 

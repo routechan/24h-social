@@ -26,7 +26,6 @@ const TimelinePostForm = () => {
 
     getSession();
   }, []);
-  console.log(user)
  
 
   // 投稿ボタン押下
@@ -40,7 +39,7 @@ const TimelinePostForm = () => {
 
     setIsLoading(true); // 送信開始
     try {
-      const response = await post(message,user.uid); // ログインユーザーのIDを使う
+      const response = await post(message,user.id); // ログインユーザーのIDを使う
 
       if (response.status === 201) {
         console.log("投稿成功");
