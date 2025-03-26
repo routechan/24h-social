@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
 const Sidebar = () => {
-  const [user,setUser] =useState<any>(null);
+  const [user,setUser] =useState<any | null>(null);
    // セッション情報を取得
    useEffect(() => {
     const getSession = async () => {
