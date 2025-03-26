@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input';
 import { registerUser } from '@/lib/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValues } from '../../types/formvalues';
+import { useRouter } from 'next/navigation';
 import { CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 
 const SignUpForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>(); // react-hook-form
+  const router = useRouter();
 
   // 登録を押すとapiに入力データをpost
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -19,9 +21,9 @@ const SignUpForm = () => {
 
       const response = await registerUser(name, email, password);
 
-      // 新規登録に成功すれば登録メールアドレス宛にメールを送信
+      // 新規登録に成功すればログインページに遷移
       if (response.status === 201) {
-        window.alert("メールアドレス宛にメールを送信しました")
+        router.push('/login');
       } else {
         console.error("登録に失敗しました", response);
         // 登録失敗時の処理（例えば、エラーメッセージを表示するなど）
@@ -71,8 +73,8 @@ const SignUpForm = () => {
       />
       {errors.password && <p className="text-red-500">{errors.password.message}</p>}
 
-      <Button type="submit" className="w-full bg-green-500 text-white cursor-pointer">アカウント作成</Button>
-      <Link href="/login" className='text-blue-500 border-blue-500 border-b cursor-pointer'>ログインはこちら</Link>
+      <Button type="submit" className="w-full bg-green-500 text-white">アカウント作成</Button>
+      <Link href="/login" className='text-blue-500 border-blue-500 border-b'>ログインはこちら</Link>
       </CardContent>
     </form>
   );
