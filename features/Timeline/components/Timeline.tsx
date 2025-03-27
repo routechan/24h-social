@@ -1,20 +1,21 @@
 import Sidebar from "@/app/components/layouts/Sidebar"
 import TimelinePostForm from "./TimelinePostForm"
 import TimelinePosts from "./TimelinePosts"
-import TimelineSwitch from "./TimelineSwitch"
+import Header from "@/app/components/layouts/Header"
 
 const Timeline = () => {
-  
-
-
   return (
-    <div className="w-3/5 mx-auto  border-x min-h-full">
-      <Sidebar/>
-        <TimelineSwitch/>
+    <div>
+      <Header/>
+    <div className="w-3/5 mx-auto h-full ">
+
+       
         <div className="mt-14">
         <TimelinePostForm/>
             <TimelinePosts/>
             </div>
+    </div>
+    <Sidebar/>
     </div>
   )
 }
