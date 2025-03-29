@@ -7,7 +7,7 @@ const Timeline = () => {
   return (
     <div>
       <Header/>
-    <div className="w-3/5 mx-auto h-full ">
+    <div className="max-w-2xl mx-auto px-4 pb-20 ">
 
        
         <div className="mt-14">
