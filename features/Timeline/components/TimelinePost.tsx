@@ -28,14 +28,14 @@ const formattedTime = `${String(remainingHours).padStart(2, '0')}:${String(remai
 
 
   return (
-    <div className='w-full border-b px-6 py-4'>
+    <div className="bg-white rounded-lg shadow-sm mb-2 p-4">
 <div className='flex  space-x-4'>
     <Avatar>
     <AvatarImage src="https://github.com/shadcn.png" />
     </Avatar>
     <div>
     <div className='text-sm flex gap-8'>
-        <div className='flex gap-1 '>{post.user.name}<span className='text-gray-500'>@{post.user.id}</span></div>
+        <div>{post.user.name}</div>
         <div className='text-gray-500'>残り{formattedTime}</div>
     </div>
     <div className=' mt-2 '>{post.content}</div>
