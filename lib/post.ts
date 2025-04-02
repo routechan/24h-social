@@ -1,8 +1,7 @@
-export async function post(message:string,userId:number) {
-    return fetch("/api/post", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message,userId }),
-    });
-  }
-  
+
+export async function fetchPost(postId:string){
+  return fetch(`/api/post/${postId}`,{
+    method:"GET",
+    headers:{"Content-Type": "application/json"}
+  })
+}

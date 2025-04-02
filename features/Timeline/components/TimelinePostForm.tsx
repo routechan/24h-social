@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { post } from "@/lib/post";
 import { useForm } from "react-hook-form";
 import { mutate } from "swr";
 import { supabase } from "@/lib/supabase";
+import { createPost } from "@/app/actions/PostActions";
 
 const TimelinePostForm = () => {
   const { handleSubmit } = useForm(); // react-hook-form
@@ -39,18 +39,20 @@ const TimelinePostForm = () => {
 
     setIsLoading(true); // 送信開始
     try {
-      const response = await post(message,user.id); // ログインユーザーのIDを使う
+      const response = await createPost(message,user.id); // ログインユーザーのIDを使う
 
-      if (response.status === 201) {
-        console.log("投稿成功");
-        setMessage(""); // 成功したら入力をクリア
-        mutate("api/post/get_today_posts"); // swrでタイムライン更新
-      } else {
-        console.error("投稿失敗");
-      }
-    } catch (error) {
-      console.error("エラーが発生しました:", error);
-    } finally {
+      if (response.error) {
+        console.error("エラーが発生しました:", error);
+    } else  {
+      console.log("投稿成功");
+      setMessage(""); // 成功したら入力をクリア
+      mutate("api/post/get_today_posts"); // swrでタイムライン更新
+    } 
+    } 
+    catch(err){
+      console.log(err)
+    }
+    finally {
       setIsLoading(false); // 送信完了
     }
   };

@@ -6,7 +6,6 @@ import { fetcher } from "@/lib/fetcher";
 const TimelinePosts = () => {
   const { data, error,isLoading } = useSWR("api/post/get_today_posts", fetcher);//useSWRで24時間以内の投稿を取得
 
-
   return (
     <div>
       {error && <div>データ取得失敗</div>}

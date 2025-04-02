@@ -2,11 +2,11 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { registerUser } from '@/lib/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormValues } from '../../types/formvalues';
 import { CardContent } from '@/components/ui/card';
 import Link from 'next/link';
+import { registerUser } from '@/app/actions/authActions';
 
 const SignUpForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>(); // react-hook-form
@@ -14,21 +14,18 @@ const SignUpForm = () => {
   // 登録を押すとapiに入力データをpost
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
-      console.log(data); // 入力されたデータをログに出力（デバッグ用）
       const { name, email, password } = data;
 
       const response = await registerUser(name, email, password);
 
       // 新規登録に成功すれば登録メールアドレス宛にメールを送信
-      if (response.status === 201) {
-        window.alert("メールアドレス宛にメールを送信しました")
+      if (response.error) {
+        console.error("登録に失敗しました", response.error);
       } else {
-        console.error("登録に失敗しました", response);
-        // 登録失敗時の処理（例えば、エラーメッセージを表示するなど）
+        window.alert("メールアドレス宛にメールを送信しました")
       }
     } catch (err) {
       console.error("登録エラー:", err);
-      // エラーハンドリング（ユーザーにエラーメッセージを表示するなど）
     }
   };
 

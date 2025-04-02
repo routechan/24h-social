@@ -16,7 +16,13 @@ try{
           },
         },
         orderBy: { createdAt: "desc" }, 
-        include:{user:true}
+        select:{
+          id:true,
+          content:true,
+          createdAt:true,
+          user:{select:{id:true,name:true,}},
+          likes:{select:{id:true}},
+            replies:{select:{id:true}}}
       });
 
       return NextResponse.json(posts,{status:200})
