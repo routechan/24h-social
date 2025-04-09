@@ -21,11 +21,14 @@ model User{
   replies Reply[]
   profile Profile?
   likes Like[]
+  followers  Follow[]  @relation("Following")
+  following  Follow[]  @relation("Followed")
 }
 
 model Post{
 id Int  @id @default(autoincrement())
 content String
+image_url String?
 createdAt DateTime @default(now())
 userId String 
 replies Reply[]
@@ -61,4 +64,16 @@ post Post @relation(fields:[postId], references:[id], onDelete: Cascade)
 
 
   @@unique([userId,postId])
+}
+
+model Follow{
+  followingId String
+  followedId  String
+
+  // ユーザーとのリレーションを定義
+  following   User @relation("Following", fields: [followingId], references: [id])
+  followed    User @relation("Followed", fields: [followedId], references: [id])
+
+  // 複合主キーを設定
+  @@id([followingId, followedId])
 }

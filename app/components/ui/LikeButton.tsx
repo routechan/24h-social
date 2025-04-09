@@ -1,13 +1,13 @@
 "use client"
 import { addLike, deleteLike } from "@/app/actions/likeActions";
-import { likeDelete, likePost } from "@/lib/like"
 import { supabase } from "@/lib/supabase";
 import { useEffect, useState } from "react"
+import { mutate } from "swr";
 
 const LikeButton = ({ postId, likes }) => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isClicked, setIsClicked] = useState(false);
-  const [likeCount, setLikeCount] = useState<number>(likes.length);
+
 
   // セッション情報を取得
   useEffect(() => {
@@ -43,8 +43,8 @@ const LikeButton = ({ postId, likes }) => {
       if (response.error) {
         console.log(response.error);
       } else {
-        setLikeCount((prev) => prev - 1);
-        setIsClicked(false);
+        mutate("api/post/get_today_posts")
+        mutate(`/api/profile/${postId}`)
       }
     }
     // まだいいねしていない場合、いいねを追加
@@ -53,8 +53,8 @@ const LikeButton = ({ postId, likes }) => {
       if (response.error) {
         console.log("いいね失敗");
       } else {
-        setLikeCount((prev) => prev + 1);
-        setIsClicked(true);
+        mutate("api/post/get_today_posts")
+        mutate(`/api/profile/${postId}`)
       }
     }
   };
@@ -77,7 +77,7 @@ const LikeButton = ({ postId, likes }) => {
           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
         />
       </svg>
-      <span>{likeCount}</span>
+      <span>{likes?.length}</span>
     </button>
   );
 };

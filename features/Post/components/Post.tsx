@@ -13,7 +13,6 @@ const Post = () => {
   const id = params?.id as string | undefined; 
   const [postData, setPostData] = useState<any>(null);
   const [loading, setLoading] = useState(true); 
-  // const [replies,setReplies] = useState([]);
 
   const { data: replies, error, isLoading } = useSWR(id ? `/api/reply/${id}` : null, fetcher);
 

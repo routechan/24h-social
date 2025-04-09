@@ -1,7 +1,13 @@
 import React from 'react'
 import UserPost from './UserPost'
+import { PostType } from '../types/PostType';
 
-const UserPosts = ({userPosts,userName}) => {
+type Props = {
+  userPosts:PostType[];
+  userName: string;
+};
+
+const UserPosts = ({userPosts,userName}:Props) => {
  
   return (
     <div className="mt-6 border-t border-gray-100 p-2 pb-20 ">

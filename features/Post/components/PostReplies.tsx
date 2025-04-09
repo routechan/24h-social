@@ -4,9 +4,13 @@ const PostReplies = ({replies}) => {
 
   return (
     <>
-    {replies.map((reply)=>(
-<PostReply key={reply.id} reply={reply}/>
-  ))}
+   {Array.isArray(replies) ? (
+    replies.map((reply) => (
+      <PostReply key={reply.id} reply={reply} />
+    ))
+  ) : (
+    <p>返信がありません</p>
+  )}
   </>
     
   )

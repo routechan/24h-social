@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { mutate } from "swr";
 
 const ReplySubmit = ({ postId }) => {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null); // ユーザーIDを管理
   const [isLoading, setIsLoading] = useState<boolean>(false); // 送信中の状態管理
   const MAX_MESSAGE_LENGTH: number = 140; // 140文字を投稿の最大入力文字数にセット
@@ -25,12 +25,12 @@ const ReplySubmit = ({ postId }) => {
   }, []);
 
   // メッセージ変更時
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
   };
 
   // 送信ボタン押下時
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
   
@@ -43,9 +43,7 @@ const ReplySubmit = ({ postId }) => {
     setIsLoading(true)
     try {
       const response = await addReply(message,postId,userId)
-      
-
-      if (response.error) {
+      if ('error' in response) {
         console.error("リプライ失敗:", response.error);
       } else {
         console.log("リプライ成功:", response);

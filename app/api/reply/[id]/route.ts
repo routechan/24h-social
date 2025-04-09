@@ -12,6 +12,7 @@ try{
         where:{postId},
         include:{
             user:true,
+            
         },
         orderBy:{createdAt:"desc"}
     },

@@ -2,8 +2,12 @@ import LikeButton from '@/app/components/ui/LikeButton';
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import Link from 'next/link';
 import React from 'react'
+import { PostType } from '../types/types';
 
-const TimelinePost = ({post}) => {
+type Props = {
+post:PostType
+}
+const TimelinePost = ({post}:Props) => {
 // 投稿の作成時間を Date 型に変換
 const createdAt = new Date(post.createdAt);
 const now = new Date();
@@ -16,8 +20,8 @@ const elapsedHours = Math.floor(elapsedMinutes / 60);
 
 // 24時間から引いて「残り時間」を計算
 let remainingHours = 24 - elapsedHours;
-let remainingMinutes = 60 - (elapsedMinutes % 60);
-let remainingSeconds = 60 - (elapsedSeconds % 60);
+const remainingMinutes = 60 - (elapsedMinutes % 60);
+const remainingSeconds = 60 - (elapsedSeconds % 60);
 
 
 
@@ -31,16 +35,16 @@ const formattedTime = `${String(remainingHours).padStart(2, '0')}:${String(remai
 
   return (
     
-    <div className="bg-white rounded-lg shadow-sm mb-2 p-4">
+    <div className="bg-white rounded-lg shadow-sm mb-2 p-4 hover:bg-violet-100">
 <div className='flex  space-x-4'>
-<Link href={`/user/${post.userId}`}>
+<Link href={`/user/${post.user?.id}`}>
     <Avatar>
     <AvatarImage src="https://github.com/shadcn.png" />
     </Avatar>
     </Link>
     <div>
     <div className='text-sm flex gap-8'>
-    <Link href={`/user/${post.userId}`}><div>{post.user.name}</div></Link>
+    <Link href={`/user/${post.user?.id}`}><div>{post.user?.name}</div></Link>
         <div className='text-gray-500'>残り{formattedTime}</div>
     </div>
     <Link href={`/post/${post.id}`}>

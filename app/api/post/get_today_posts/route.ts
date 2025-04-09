@@ -21,8 +21,8 @@ try{
           content:true,
           createdAt:true,
           user:{select:{id:true,name:true,}},
-          likes:{select:{id:true}},
-            replies:{select:{id:true}}}
+          likes:true,
+          replies:{select:{id:true}}}
       });
 
       return NextResponse.json(posts,{status:200})
