@@ -9,15 +9,16 @@ import { mutate } from "swr";
 import { supabase } from "@/lib/supabase";
 import { createPost } from "@/app/actions/postActions";
 
-const TimelinePostForm = () => {
+
+
+const TimelinePostForm = ({isWriting, onClose }) => {
   const { handleSubmit } = useForm(); // react-hook-form
   const [message, setMessage] = useState<string>(""); // メッセージを管理
   const [isLoading, setIsLoading] = useState<boolean>(false); // 送信中の状態管理
-  const MAX_MESSAGE_LENGTH: number = 140; // 140文字を投稿の最大入力文字数にセット
+  const MAX_MESSAGE_LENGTH: number = 100; // 140文字を投稿の最大入力文字数にセット
   const [user, setUser] = useState<any>(null); // ユーザー情報を管理
 
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+ 
 
   // セッション情報を取得
   useEffect(() => {
@@ -31,18 +32,7 @@ const TimelinePostForm = () => {
   }, []);
   
 
-   // 画像選択時の処理
-   const handleFileChange = async(event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      
-      setImageFile(file);
-      setPreviewUrl(URL.createObjectURL(file)); // プレビュー用URLを作成
    
-    }
-   
-  };
- 
   // 投稿ボタン押下
   const onSubmit = async () => {
     if(!user){
@@ -54,7 +44,7 @@ const TimelinePostForm = () => {
 
     setIsLoading(true); // 送信開始
     try {
-      const response = await createPost(message,imageFile,user.id); // ログインユーザーのIDを使う
+      const response = await createPost(message,user.id); // ログインユーザーのIDを使う
       
 
       if (response.error) {
@@ -62,6 +52,7 @@ const TimelinePostForm = () => {
     } else  {
       console.log("投稿成功");
       setMessage(""); // 成功したら入力をクリア
+      onClose();
       mutate("api/post/get_today_posts"); // swrでタイムライン更新
     } 
     } 
@@ -74,41 +65,52 @@ const TimelinePostForm = () => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm  mb-4 p-4">
-      <p>{user ? "ログイン中" : "ログアウト中"}</p>
-      
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex items-center space-x-4">
+    <>
+    {isWriting && (
+        <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-xl p-6 w-[90%] max-w-md shadow-xl relative"
+        onClick={(e) => e.stopPropagation()} // モーダル内クリックで閉じない
+      >
+        <h2 className="text-lg font-semibold mb-4">新しい投稿</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="flex items-center gap-3">
             <Avatar>
-              <AvatarImage src= "https://github.com/shadcn.png"/>
+              <AvatarImage src={user?.avatar_url || ""} />
             </Avatar>
-            <Textarea
-              className="overflow-y-auto max-h-[200px]"
-              placeholder="24時間だけの投稿をしよう"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)} // useStateで管理
-            />
-           
+            <span className="font-medium">{user?.name || "User"}</span>
           </div>
-
-          <input type="file" accept="image/*" onChange={handleFileChange} className="block" />
-<img src={previewUrl}/>
-
-          <div className="flex justify-end mt-1">
+          <Textarea
+           onChange={(e) => setMessage(e.target.value)}
+            placeholder="いまなにしてる？"
+            className="resize-none min-h-[100px]"
+          />
+          
+        
+            <div className="flex justify-end mt-1">
             {message.length > MAX_MESSAGE_LENGTH && <p className="text-gray-500">{MAX_MESSAGE_LENGTH}文字以内で入力してください</p>}
           </div>
           <div className="flex justify-end">
-            <Button
-              type="submit"
-              className="cursor-pointer mt-2 bg-violet-300 flex hover:scale-105"
-              disabled={isLoading || !message.trim() || message.length > MAX_MESSAGE_LENGTH}
-            >
-              {isLoading ? "投稿中..." : "投稿"}
+            <Button disabled={isLoading || !message.trim() || message.length > MAX_MESSAGE_LENGTH} type="submit" className="bg-violet-600 hover:bg-violet-700 text-white">
+            {isLoading ? "投稿中..." : "投稿"}
             </Button>
           </div>
         </form>
-      
+        {/* 閉じるボタン（任意） */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-3 text-gray-400 hover:text-gray-600 text-xl"
+        >
+          &times;
+        </button>
+      </div>
     </div>
+    )
+  }
+    </>
   );
 };
 
